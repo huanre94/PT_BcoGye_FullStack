@@ -1,0 +1,6 @@
+@PT_BcoGye_FullStack_HostAddress = http://localhost:5083
+
+GET {{PT_BcoGye_FullStack_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
