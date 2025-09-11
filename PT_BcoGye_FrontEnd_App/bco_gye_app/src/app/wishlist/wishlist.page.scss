@@ -1,0 +1,155 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+
+  ion-icon {
+    color: var(--ion-color-medium);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    color: var(--ion-color-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin-bottom: 2rem;
+  }
+
+  ion-button {
+    --border-radius: 8px;
+  }
+}
+
+.wishlist-container {
+  padding: 1rem;
+}
+
+.wishlist-item {
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+
+  .item-content {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .product-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .product-info {
+    flex: 1;
+    min-width: 0;
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .price {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ion-color-primary);
+    }
+
+    .added-date {
+      margin: 0;
+      font-size: 0.875rem;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .item-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+
+    ion-button[fill="clear"] {
+      width: 44px;
+      height: 44px;
+      --border-radius: 50%;
+    }
+
+    ion-button[expand="block"] {
+      --border-radius: 8px;
+      min-width: 140px;
+      height: 36px;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .wishlist-item {
+    .item-content {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+    }
+
+    .product-image {
+      width: 120px;
+      height: 120px;
+      align-self: center;
+    }
+
+    .product-info {
+      text-align: center;
+
+      h3 {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+      }
+    }
+
+    .item-actions {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      ion-button[expand="block"] {
+        flex: 1;
+        min-width: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .wishlist-container {
+    padding: 0.5rem;
+  }
+
+  .wishlist-item .item-content {
+    padding: 0.75rem;
+  }
+}

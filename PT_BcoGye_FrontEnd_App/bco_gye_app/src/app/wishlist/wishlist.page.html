@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Lista de Deseos
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="wishlistItems.length > 0">
+      <ion-button (click)="clearWishlist()">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Empty state -->
+  <div *ngIf="wishlistItems.length === 0" class="empty-state">
+    <ion-icon name="heart-outline" size="large"></ion-icon>
+    <h2>Tu lista de deseos está vacía</h2>
+    <p>Agrega productos que te gusten para verlos aquí</p>
+    <ion-button routerLink="/tabs/home" fill="outline">
+      <ion-icon name="storefront-outline" slot="start"></ion-icon>
+      Explorar productos
+    </ion-button>
+  </div>
+
+  <!-- Wishlist items -->
+  <div *ngIf="wishlistItems.length > 0" class="wishlist-container">
+    <ion-card *ngFor="let item of wishlistItems" class="wishlist-item">
+      <div class="item-content">
+        <div class="product-image">
+          <img [src]="item.product.image" [alt]="item.product.name" />
+        </div>
+        
+        <div class="product-info">
+          <h3>{{ item.product.name }}</h3>
+          <p class="price">${{ item.product.price | number:'1.2-2' }}</p>
+          <p class="added-date">Agregado: {{ item.addedDate | date:'short' }}</p>
+        </div>
+        
+        <div class="item-actions">
+          <ion-button 
+            fill="clear" 
+            color="danger"
+            (click)="removeFromWishlist(item.product.id)">
+            <ion-icon name="heart" slot="icon-only"></ion-icon>
+          </ion-button>
+          
+          <ion-button 
+            expand="block" 
+            size="small"
+            (click)="addToCart(item)">
+            <ion-icon name="cart-outline" slot="start"></ion-icon>
+            Agregar al carrito
+          </ion-button>
+        </div>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>

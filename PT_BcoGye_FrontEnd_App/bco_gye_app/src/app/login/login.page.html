@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Iniciar Sesión
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="login-container">
+    <div class="logo-container">
+      <ion-icon name="storefront-outline" size="large"></ion-icon>
+      <h1>Bienvenido</h1>
+      <p>Ingresa tus credenciales para continuar</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="stacked">Correo electrónico</ion-label>
+        <ion-input 
+          type="email" 
+          formControlName="email"
+          placeholder="ejemplo@correo.com">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="email?.invalid && email?.touched" class="error-message">
+        <p *ngIf="email?.errors?.['required']">El correo es requerido</p>
+        <p *ngIf="email?.errors?.['email']">Ingresa un correo válido</p>
+      </div>
+
+      <ion-item>
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input 
+          type="password" 
+          formControlName="password"
+          placeholder="Tu contraseña">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="password?.invalid && password?.touched" class="error-message">
+        <p *ngIf="password?.errors?.['required']">La contraseña es requerida</p>
+        <p *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</p>
+      </div>
+
+      <ion-button 
+        expand="block" 
+        type="submit" 
+        [disabled]="loginForm.invalid || isLoading"
+        class="login-button">
+        <ion-icon name="log-in-outline" slot="start"></ion-icon>
+        Iniciar Sesión
+      </ion-button>
+    </form>
+
+    <!-- Demo credentials -->
+    <ion-card class="demo-credentials">
+      <ion-card-header>
+        <ion-card-title>Credenciales de prueba</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Email:</strong> demo@example.com</p>
+        <p><strong>Contraseña:</strong> 123456</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
