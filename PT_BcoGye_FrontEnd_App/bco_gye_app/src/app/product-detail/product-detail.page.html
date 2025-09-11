@@ -1,0 +1,96 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Detalle del Producto
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Loading skeleton -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="product-image-skeleton">
+      <ion-skeleton-text animated style="width: 100%; height: 300px;"></ion-skeleton-text>
+    </div>
+    <div class="product-info-skeleton">
+      <ion-skeleton-text animated style="width: 80%; height: 28px; margin-bottom: 1rem;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 40%; height: 24px; margin-bottom: 2rem;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 20px; margin-bottom: 0.5rem;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 20px; margin-bottom: 0.5rem;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%; height: 20px;"></ion-skeleton-text>
+    </div>
+  </div>
+
+  <!-- Product content -->
+  <div *ngIf="!isLoading && product" class="product-container">
+    <div class="product-image">
+      <img [src]="product.image" [alt]="product.name" />
+    </div>
+
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="price">${{ product.price | number:'1.2-2' }}</p>
+
+      <div class="description-section">
+        <h3>Descripción</h3>
+        <p class="description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        </p>
+        
+        <p class="description">
+          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, 
+          eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+        </p>
+
+        <h4>Características:</h4>
+        <ul class="features-list">
+          <li>Material de alta calidad</li>
+          <li>Diseño moderno y elegante</li>
+          <li>Fácil de usar y mantener</li>
+          <li>Garantía de 2 años</li>
+          <li>Envío gratuito a nivel nacional</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="!isLoading && !product" class="error-state">
+    <ion-icon name="alert-circle-outline" size="large"></ion-icon>
+    <h2>Producto no encontrado</h2>
+    <p>El producto que buscas no está disponible</p>
+    <ion-button (click)="goBack()" fill="outline">
+      Volver a productos
+    </ion-button>
+  </div>
+
+  <!-- Fixed action buttons -->
+  <div *ngIf="product" class="action-buttons">
+    <ion-button 
+      fill="outline" 
+      (click)="toggleWishlist()"
+      [color]="isInWishlist() ? 'danger' : 'medium'"
+      class="wishlist-btn">
+      <ion-icon 
+        [name]="isInWishlist() ? 'heart' : 'heart-outline'"
+        slot="icon-only">
+      </ion-icon>
+    </ion-button>
+    
+    <ion-button 
+      expand="block" 
+      (click)="addToCart()"
+      class="add-to-cart-btn">
+      <ion-icon name="cart-outline" slot="start"></ion-icon>
+      Agregar al carrito
+    </ion-button>
+  </div>
+</ion-content>

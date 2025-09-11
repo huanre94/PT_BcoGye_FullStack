@@ -27,18 +27,27 @@ export class ProductService {
     }
   }
 
-  getProducts(page: number = 1, limit: number = 10): Observable<Product[]> {
+  getProducts(page: number = 1, limit: number = 10, searchTerm: string = ''): Observable<Product[]> {
+    // Filtrar productos por término de búsqueda
+    let filteredProducts = this.mockProducts;
+    
+    if (searchTerm.trim()) {
+      filteredProducts = this.mockProducts.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
     // Simulación de paginación
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
-    const paginatedProducts = this.mockProducts.slice(startIndex, endIndex);
+    const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
     return of(paginatedProducts).pipe(
       delay(500) // Simular delay de red
     );
 
     // Para API real, descomenta esta línea:
-    // return this.http.get<Product[]>(`${this.apiUrl}/products?page=${page}&limit=${limit}`);
+    // return this.http.get<Product[]>(`${this.apiUrl}/products?page=${page}&limit=${limit}&search=${encodeURIComponent(searchTerm)}`);
   }
 
   getProductById(id: string): Observable<Product | undefined> {

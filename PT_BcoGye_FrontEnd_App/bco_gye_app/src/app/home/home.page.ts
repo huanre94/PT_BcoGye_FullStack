@@ -28,6 +28,8 @@ export class HomePage implements OnInit {
   currentPage = 1;
   isLoading = false;
   hasMoreData = true;
+  searchTerm = '';
+  searchTimeout: any;
 
   constructor(
     private productService: ProductService,
@@ -46,7 +48,7 @@ export class HomePage implements OnInit {
 
     this.isLoading = true;
     
-    this.productService.getProducts(this.currentPage, 10).subscribe({
+    this.productService.getProducts(this.currentPage, 10, this.searchTerm).subscribe({
       next: (newProducts) => {
         if (newProducts.length === 0) {
           this.hasMoreData = false;
@@ -95,7 +97,7 @@ export class HomePage implements OnInit {
     this.currentPage = 1;
     this.hasMoreData = true;
     
-    this.productService.getProducts(1, 10).subscribe({
+    this.productService.getProducts(1, 10, this.searchTerm).subscribe({
       next: (products) => {
         this.products = products;
         this.currentPage = 2;
@@ -106,6 +108,39 @@ export class HomePage implements OnInit {
         event.target.complete();
       }
     });
+  }
+
+  onSearchChange() {
+    // Clear the previous timeout
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
+
+    // Set a new timeout for debouncing
+    this.searchTimeout = setTimeout(() => {
+      this.searchProducts();
+    }, 300);
+  }
+
+  searchProducts() {
+    this.products = [];
+    this.currentPage = 1;
+    this.hasMoreData = true;
+    
+    if (this.infiniteScroll) {
+      this.infiniteScroll.disabled = false;
+    }
+    
+    this.loadProducts();
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.searchProducts();
+  }
+
+  viewProductDetail(productId: string) {
+    this.router.navigate(['/product-detail', productId]);
   }
 
   logout() {
