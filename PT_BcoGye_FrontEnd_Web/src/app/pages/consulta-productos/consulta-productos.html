@@ -1,0 +1,156 @@
+<div class="consulta-container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-content">
+      <h1 class="nav-title">Consulta de Productos</h1>
+      <div class="nav-actions">
+        <button class="btn-add" (click)="goToAddProduct()">
+          Agregar Producto
+        </button>
+        <button class="btn-back" (click)="goBack()">
+          Volver
+        </button>
+        <button class="btn-logout" (click)="logout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <main class="main-content">
+    
+    <!-- Filtros -->
+    <div class="filters-container">
+      <div class="filters-row">
+        <div class="search-group">
+          <label for="search">Buscar productos:</label>
+          <input 
+            type="text" 
+            id="search"
+            [(ngModel)]="searchTerm"
+            (input)="onSearchChange()"
+            class="search-input"
+            placeholder="Buscar por nombre o descripción..."
+          >
+        </div>
+        
+        <div class="category-group">
+          <label for="category">Filtrar por categoría:</label>
+          <select 
+            id="category"
+            [(ngModel)]="selectedCategory"
+            (change)="onCategoryChange()"
+            class="category-select"
+          >
+            <option value="">Todas las categorías</option>
+            <option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+        
+        <div class="clear-group">
+          <button 
+            class="btn-clear" 
+            (click)="clearFilters()"
+            [disabled]="!searchTerm && !selectedCategory"
+          >
+            Limpiar Filtros
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla de Productos -->
+    <div class="table-container">
+      <div class="table-header">
+        <h2>Productos Encontrados</h2>
+        <div class="table-stats">
+          Mostrando {{ filteredProducts.length }} de {{ products.length }} productos
+        </div>
+      </div>
+
+      <!-- Loading para tabla -->
+      <div class="loading-table" *ngIf="isLoading">
+        <p>Cargando productos...</p>
+      </div>
+
+      <!-- Mensaje de error -->
+      <div class="error-message" *ngIf="errorMessage && !isLoading">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Tabla -->
+      <div class="table-wrapper" *ngIf="!isLoading && !errorMessage">
+        <table class="products-table" *ngIf="filteredProducts.length > 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Categoría</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts">
+              <td>{{ product.id }}</td>
+              <td class="product-name">{{ product.name }}</td>
+              <td class="product-price">${{ product.price | number:'1.2-2' }}</td>
+              <td>
+                <span class="category-badge">{{ product.category }}</span>
+              </td>
+              <td class="product-description">
+                {{ product.description | slice:0:100 }}{{ product.description.length > 100 ? '...' : '' }}
+              </td>
+              <td class="actions">
+                <button 
+                  class="btn-view" 
+                  (click)="editProduct(product.id)"
+                  title="Ver/Editar producto"
+                >
+                  Ver
+                </button>
+                <button 
+                  class="btn-edit-table" 
+                  (click)="editProduct(product.id)"
+                  title="Editar producto"
+                >
+                  Editar
+                </button>
+                <button 
+                  class="btn-delete" 
+                  (click)="deleteProduct(product.id)"
+                  title="Eliminar producto"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Estado vacío -->
+        <div class="empty-table" *ngIf="filteredProducts.length === 0 && products.length > 0">
+          <h3>No se encontraron productos</h3>
+          <p>Intenta ajustar los filtros de búsqueda</p>
+          <button class="btn-clear-alt" (click)="clearFilters()">
+            Mostrar todos los productos
+          </button>
+        </div>
+
+        <!-- Estado completamente vacío -->
+        <div class="empty-table" *ngIf="products.length === 0">
+          <h3>No hay productos registrados</h3>
+          <p>Comienza agregando tu primer producto</p>
+          <button class="btn-add-first" (click)="goToAddProduct()">
+            Agregar Primer Producto
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

@@ -1,0 +1,63 @@
+<div class="landing-container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-content">
+      <h1 class="nav-title">Productos</h1>
+      <div class="nav-actions">
+        <button class="btn-consulta" (click)="goToConsultaProductos()">
+          Consultar Productos
+        </button>
+        <button class="btn-add" (click)="goToAddProduct()">
+          Agregar Producto
+        </button>
+        <button class="btn-logout" (click)="logout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <main class="main-content">
+    <div class="content-header">
+      <h2>Listado de Productos</h2>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="isLoading">
+      <p>Cargando productos...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" *ngIf="errorMessage && !isLoading">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" *ngIf="!isLoading && products.length > 0">
+      <div class="product-card" *ngFor="let product of products">
+        <div class="product-header">
+          <h3 class="product-name">{{ product.name }}</h3>
+          <span class="product-price">${{ product.price }}</span>
+        </div>
+        <div class="product-body">
+          <p class="product-description">{{ product.description }}</p>
+          <span class="product-category">{{ product.category }}</span>
+        </div>
+        <div class="product-actions">
+          <button class="btn-view">Ver Detalles</button>
+          <button class="btn-edit">Editar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoading && !errorMessage && products.length === 0">
+      <h3>No hay productos disponibles</h3>
+      <p>Comienza agregando tu primer producto</p>
+      <button class="btn-add-first" (click)="goToAddProduct()">
+        Agregar Primer Producto
+      </button>
+    </div>
+  </main>
+</div>
