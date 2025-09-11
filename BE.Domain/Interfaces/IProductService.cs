@@ -6,8 +6,8 @@ namespace BE.Domain.Interfaces
     {
         Task<IEnumerable<Product>> GetAllProducts();
         Task<Product> GetProductById(Guid id);
-        Task Add(Product product);
-        Task Update(Product product);
-        Task Delete(Guid id);
+        Task<Product> Add(Product product);
+        Task<bool> Update(Product product);
+        Task<bool> Delete(Guid id);
     }
 }
