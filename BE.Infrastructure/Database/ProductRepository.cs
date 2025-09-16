@@ -1,11 +1,6 @@
 ﻿using BE.Application.Interfaces;
 using BE.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BE.Infrastructure.Database
 {
@@ -18,30 +13,26 @@ namespace BE.Infrastructure.Database
             _context = context;
         }
 
-        public async Task Add(Product product)
+        public async Task AddAsync(Product product) => await _context.Products.AddAsync(product);
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
+            return await _context.Products
+                .Include(p => p.SupplierProducts)
+                    .ThenInclude(sp => sp.Supplier)
+                .ToListAsync();
         }
 
-        public Task Delete(Guid id)
+        public async Task<Product?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Products
+                .Include(p => p.SupplierProducts)
+                    .ThenInclude(sp => sp.Supplier)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<IEnumerable<Product>> GetAllProducts()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> GetProductById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(Product product)
-        {
-            throw new NotImplementedException();
-        }
+        public void Remove(Product product) => _context.Products.Remove(product);
+        public void Update(Product product) => _context.Products.Update(product);
+        public Task SaveChangesAsync() => _context.SaveChangesAsync();
     }
 }

@@ -1,13 +1,12 @@
-﻿using BE.Domain.Entities;
+﻿using BE.Domain.Dto.Products;
+using BE.Domain.Dto.SupplierProduct;
 
 namespace BE.Domain.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllProducts();
-        Task<Product> GetProductById(Guid id);
-        Task<Product> Add(Product product);
-        Task<bool> Update(Product product);
-        Task<bool> Delete(Guid id);
+        Task<IEnumerable<ProductDto>> GetAllAsync();
+        Task<ProductDto> CreateAsync(CreateProductDto dto);
+        Task AddSupplierInfoAsync(Guid productId, AddSupplierProductDto dto);
     }
 }
